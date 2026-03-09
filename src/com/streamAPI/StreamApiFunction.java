@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class StreamApiFunction {
 
@@ -26,6 +27,10 @@ public class StreamApiFunction {
 		List<Integer> duplicates = Arrays.asList(1,2,2,3,8,4,4,5,10);
 		List<Integer> distinctElements = duplicates.stream().distinct().collect(Collectors.toList());
 		System.out.println(distinctElements);
+		
+		// for each
+		nums.stream().forEach((num) -> System.out.print(num+" "));
+		System.out.println();
 		
 		//sort to sort the data
 		List<Integer> sortedByComparable =  nums.stream().sorted().collect(Collectors.toList());
@@ -88,6 +93,10 @@ public class StreamApiFunction {
 		Map<Character, Long>  frequency = str.chars().mapToObj((ch) -> (char) ch).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
 		System.out.println(frequency);
 		
+		int arr[] = {1,2,1,1,2,3,4,5};
+		Map<Integer, Long> res = Arrays.stream(arr).boxed().collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+		System.out.println(res);
+		
 		// max and min
 		int max = nums.stream().max((o1,o2) -> o1-o2).get();
 		String max1 = names.stream().max((o1,o2) -> o1.compareTo(o2)).get();
@@ -107,6 +116,43 @@ public class StreamApiFunction {
 		List<List<String>> collectionOfNames = Arrays.asList(Arrays.asList("rushi"),Arrays.asList("rutik"),Arrays.asList("SURAJ"));
 		List<String> flatteredList =  collectionOfNames.stream().flatMap(list -> list.stream()).collect(Collectors.toList());
 		System.out.println(flatteredList);
+		
+		//seperate even and odds
+				Map<Boolean, List<Integer>> map = nums.stream().collect(Collectors.partitioningBy((num) -> num%2 == 0));
+				List<Integer> even = map.get(true);
+				List<Integer> odd = map.get(false);
+				System.out.println(even);
+				System.out.println(odd);
+				
+	    // join list of string with prefix,suffix,deliminator
+		String result = names.stream().collect(Collectors.joining("/","[","}"));
+		System.out.println(result);
+		
+		// merge two unsorted array into single sorted array
+		int arr1[] = {2,5,3,4};
+		int arr2[] = {1,8,9,7,6};
+		int sortedArray[] = IntStream.concat(Arrays.stream(arr1),Arrays.stream(arr2)).sorted().toArray();
+		List<Integer> list = Arrays.stream(sortedArray).boxed().collect(Collectors.toList());
+		System.out.println(list);
+		
+		// three max or min
+		List<Integer> max3 = nums.stream().sorted(Comparator.reverseOrder()).limit(3).collect(Collectors.toList());
+		System.out.println(max3);
+		
+		//second largest
+		Integer secondLargest = nums.stream().sorted(Comparator.reverseOrder()).skip(1).findFirst().get();
+		System.out.println(secondLargest);
+		
+		// list of string in increasing order of length
+		List<Integer> sortedLength = names.stream().map((name) -> name.length()).sorted().collect(Collectors.toList());
+		System.out.println(sortedLength);
+	
+		// sum and average of an array
+		Arrays.stream(arr1).sum();
+		Arrays.stream(arr1).average().getAsDouble();
+		int last = Arrays.stream(arr1).skip(arr1.length-1).findFirst().getAsInt();
+		System.out.println(last);
+		
 
 	}
 
